@@ -96,14 +96,25 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)options resolver:(RCTPromiseResolveBlock)r
     self.resolve = resolve;
     self.reject = reject;
     
+    NSString *subtotal = [RCTConvert NSString:options[@"subtotal"]];
+    NSString *shipping = [RCTConvert NSString:options[@"shipping"]];
+    NSString *tax = [RCTConvert NSString:options[@"tax"]];
+    
     NSString *price = [RCTConvert NSString:options[@"price"]];
     NSString *currency = [RCTConvert NSString:options[@"currency"]];
     NSString *description = [RCTConvert NSString:options[@"description"]];
+    
+    NSString *payee = [RCTConvert NSString:options[@"payee"]];
     
     self.payment = [[PayPalPayment alloc] init];
     [self.payment setAmount:[[NSDecimalNumber alloc] initWithString:price]];
     [self.payment setCurrencyCode:currency];
     [self.payment setShortDescription:description];
+    [self.payment setPayeeEmail: payee]
+//    [self.payment
+//     setPaymentDetails: [PayPalPaymentDetails paymentDetailsWithSubtotal:[[NSDecimalNumber alloc] initWithString: detailsSubtotal]]
+//     withShipping: [PayPalPaymentDetails paymentDetailsWithSubtotal:[[NSDecimalNumber alloc] initWithString: detailsShipping]]
+//     withTax: [PayPalPaymentDetails paymentDetailsWithSubtotal:[[NSDecimalNumber alloc] initWithString: detailsTax]]]]
     
     self.configuration = [[PayPalConfiguration alloc] init];
     [self.configuration setAcceptCreditCards:true];
